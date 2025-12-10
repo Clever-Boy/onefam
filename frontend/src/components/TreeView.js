@@ -2,7 +2,7 @@ import React from 'react';
 import { Pencil, Trash2, User, Cake, Heart } from 'lucide-react';
 
 const TreeView = ({ members, onEdit, onDelete }) => {
-  // Build tree structure
+  // Build tree structure with both parents support
   const buildTree = () => {
     const memberMap = {};
     members.forEach((member) => {
@@ -10,10 +10,25 @@ const TreeView = ({ members, onEdit, onDelete }) => {
     });
 
     const roots = [];
+    const addedToParent = new Set();
+
     members.forEach((member) => {
-      if (member.parent_id && memberMap[member.parent_id]) {
-        memberMap[member.parent_id].children.push(memberMap[member.id]);
-      } else {
+      // Add to father's children if father exists
+      if (member.father_id && memberMap[member.father_id]) {
+        if (!addedToParent.has(member.id)) {
+          memberMap[member.father_id].children.push(memberMap[member.id]);
+          addedToParent.add(member.id);
+        }
+      }
+      // Add to mother's children if mother exists and not already added
+      else if (member.mother_id && memberMap[member.mother_id]) {
+        if (!addedToParent.has(member.id)) {
+          memberMap[member.mother_id].children.push(memberMap[member.id]);
+          addedToParent.add(member.id);
+        }
+      }
+      // If no parents, add to roots
+      else if (!member.father_id && !member.mother_id) {
         roots.push(memberMap[member.id]);
       }
     });
