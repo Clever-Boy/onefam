@@ -167,7 +167,7 @@ const EventsCalendar = ({ open, onClose, familyId, members }) => {
                       <SelectValue placeholder="All Years" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Years</SelectItem>
+                      <SelectItem value="all">All Years</SelectItem>
                       {years.map((y) => (
                         <SelectItem key={y} value={y.toString()}>
                           {y}
