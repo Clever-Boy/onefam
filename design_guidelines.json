@@ -1,0 +1,110 @@
+{
+  "identity": {
+    "name": "OneFam - The Modern Heirloom",
+    "archetype": "Organic & Earthy",
+    "vibe": "Grounded, Nostalgic, yet Sharp",
+    "description": "A family tree that feels like a living archive, not a database. We merge the warmth of physical photo albums with the precision of modern data visualization."
+  },
+  "typography": {
+    "primary_font": "Playfair Display",
+    "secondary_font": "Manrope",
+    "mono_font": "JetBrains Mono",
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-serif tracking-tight leading-[0.9]",
+      "h2": "text-4xl md:text-5xl font-serif tracking-tight",
+      "h3": "text-2xl md:text-3xl font-serif font-medium",
+      "body": "text-base md:text-lg font-sans leading-relaxed text-stone-600",
+      "caption": "text-xs font-mono uppercase tracking-widest text-stone-500"
+    },
+    "imports": [
+      "@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,900;1,400&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400&display=swap');"
+    ]
+  },
+  "colors": {
+    "palette": {
+      "background": "#F5F2EB",
+      "foreground": "#1C1917",
+      "primary": "#2C4F42",
+      "primary_foreground": "#F5F2EB",
+      "secondary": "#E6E1D6",
+      "secondary_foreground": "#2C4F42",
+      "accent": "#C86B53",
+      "accent_foreground": "#FFFFFF",
+      "muted": "#EBE8E0",
+      "muted_foreground": "#78716C",
+      "border": "#D6D3C9",
+      "input": "#E6E1D6",
+      "ring": "#2C4F42",
+      "e1_twist": "#D4FF33"
+    },
+    "usage": {
+      "background": "Warm Sand (Paper feel)",
+      "primary": "Deep Forest Green (Roots/Lineage)",
+      "accent": "Terracotta (Warmth/Love)",
+      "twist": "Electric Lime (Active states/New notifications)"
+    }
+  },
+  "visual_enhancers": {
+    "radius": "0.75rem",
+    "shadows": {
+      "card": "0 4px 6px -1px rgba(44, 79, 66, 0.05), 0 2px 4px -1px rgba(44, 79, 66, 0.03)",
+      "floating": "0 20px 25px -5px rgba(44, 79, 66, 0.1), 0 10px 10px -5px rgba(44, 79, 66, 0.04)"
+    },
+    "textures": {
+      "paper_overlay": "url('https://images.unsplash.com/photo-1629552485378-911ab0c3b0f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwxfHx3YXJtJTIwcGFwZXIlMjB0ZXh0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NjUzMzk0MDJ8MA&ixlib=rb-4.1.0&q=85')",
+      "noise": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E\")"
+    }
+  },
+  "layout_strategies": {
+    "dashboard": "Bento Grid (Mode A: Tetris)",
+    "family_tree": "Custom CSS Grid Hierarchy or React Flow for interactive nodes",
+    "spacing": "Generous. Use p-8 to p-12 for containers. Gap-6 for grids."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-3 font-serif italic transition-all hover:scale-105 shadow-lg",
+      "secondary": "bg-transparent border border-primary/20 text-primary hover:bg-primary/5 rounded-full px-6 py-2 font-sans tracking-wide"
+    },
+    "cards": {
+      "base": "bg-white/50 backdrop-blur-sm border border-white/40 shadow-card rounded-xl p-6 relative overflow-hidden group hover:border-accent/30 transition-colors",
+      "interactive": "cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+    },
+    "inputs": {
+      "style": "bg-white/40 border-b-2 border-primary/10 focus:border-primary/50 rounded-t-md px-4 py-3 outline-none transition-all font-serif text-lg placeholder:font-sans placeholder:text-muted-foreground/50"
+    }
+  },
+  "image_urls": {
+    "hero": {
+      "url": "https://images.unsplash.com/flagged/photo-1567318362383-fa193e67bbd5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwZmFtaWx5JTIwcG9ydHJhaXRzJTIwc21pbGluZ3xlbnwwfHx8fDE3NjUzMzk0MDB8MA&ixlib=rb-4.1.0&q=85",
+      "desc": "Warm family moment on sofa",
+      "usage": "Landing page hero or dashboard welcome"
+    },
+    "placeholders": [
+      {
+        "url": "https://images.unsplash.com/photo-1585813597616-63e881759e9d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHwyfHxkaXZlcnNlJTIwZmFtaWx5JTIwcG9ydHJhaXRzJTIwc21pbGluZ3xlbnwwfHx8fDE3NjUzMzk0MDB8MA&ixlib=rb-4.1.0&q=85",
+        "desc": "Couple portrait"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1661274766834-4a700d13dabb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzl8MHwxfHNlYXJjaHw0fHxkaXZlcnNlJTIwZmFtaWx5JTIwcG9ydHJhaXRzJTIwc21pbGluZ3xlbnwwfHx8fDE3NjUzMzk0MDB8MA&ixlib=rb-4.1.0&q=85",
+        "desc": "Group portrait"
+      }
+    ],
+    "icons": {
+      "birthday": "https://images.unsplash.com/photo-1619318249303-5a4535d864e4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwxfHxiaXJ0aGRheSUyMGNha2UlMjBjZWxlYnJhdGlvbiUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzY1MzM5NDA0fDA&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "instructions_to_main_agent": {
+    "setup": "Install 'lucide-react' for icons, 'clsx' and 'tailwind-merge' for utils. Use 'sonner' for toasts.",
+    "styling": "Override the CSS variables in index.css with the palette provided above. Add the fonts to index.html or import in CSS.",
+    "layout": "For the Family Tree, create a 'TreeNode' component. Use CSS Flexbox/Grid with pseudo-elements (::before, ::after) to draw the connecting lines. Do not overcomplicate with heavy D3 libraries unless necessary for zoom/pan.",
+    "auth": "Create a simple 'Login' page with the paper texture background. Use the 'OneFam' logo (text-based, Playfair Display).",
+    "alerts": "Use the 'Electric Lime' twist color for the notification dot or 'New' badges to cut through the earth tones."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not use generic gradients. Use the paper texture overlay with low opacity (mix-blend-mode: multiply) to give depth.",
+    "Avoid 'Inter' font. Use 'Manrope' for UI text and 'Playfair Display' for all headings.",
+    "Buttons should feel tactile. Add a subtle inner shadow or grain.",
+    "For the Family Tree: Ensure lines are curved (border-radius) not sharp right angles, to feel more organic.",
+    "Mobile Responsiveness: The tree must be scrollable (overflow-x-auto) or switch to a 'List/Card' view on mobile."
+  ]
+}
