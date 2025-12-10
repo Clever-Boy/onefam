@@ -56,21 +56,25 @@ class Family(BaseModel):
 class FamilyMemberCreate(BaseModel):
     first_name: str
     last_name: str
+    email: Optional[str] = None
     address: Optional[str] = None
     birthday: Optional[str] = None  # Format: YYYY-MM-DD
     anniversary: Optional[str] = None  # Format: YYYY-MM-DD
     comments: Optional[str] = None
-    parent_id: Optional[str] = None  # For hierarchy
+    father_id: Optional[str] = None  # Parent 1
+    mother_id: Optional[str] = None  # Parent 2
     photo_base64: Optional[str] = None
 
 class FamilyMemberUpdate(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    email: Optional[str] = None
     address: Optional[str] = None
     birthday: Optional[str] = None
     anniversary: Optional[str] = None
     comments: Optional[str] = None
-    parent_id: Optional[str] = None
+    father_id: Optional[str] = None
+    mother_id: Optional[str] = None
     photo_base64: Optional[str] = None
 
 class FamilyMember(BaseModel):
@@ -79,12 +83,14 @@ class FamilyMember(BaseModel):
     family_id: str
     first_name: str
     last_name: str
+    email: Optional[str] = None
     address: Optional[str] = None
     photo_base64: Optional[str] = None
     birthday: Optional[str] = None
     anniversary: Optional[str] = None
     comments: Optional[str] = None
-    parent_id: Optional[str] = None
+    father_id: Optional[str] = None
+    mother_id: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class CustomEventCreate(BaseModel):
@@ -107,10 +113,6 @@ class Alert(BaseModel):
     date: str
     member_name: Optional[str] = None
     days_until: int
-
-class EmailNotificationRequest(BaseModel):
-    email: EmailStr
-    family_id: str
 
 # ============= AUTH =============
 
@@ -339,19 +341,23 @@ async def send_email_notification(to_email: str, subject: str, content: str):
         response = sg.send(message)
         return response.status_code == 202
     except Exception as e:
-        logging.error(f"Failed to send email: {str(e)}")
+        logging.error(f"Failed to send email to {to_email}: {str(e)}")
         return False
 
 @api_router.post("/families/{family_id}/send-alerts")
-async def send_alert_emails(family_id: str, request: EmailNotificationRequest, background_tasks: BackgroundTasks):
-    """Send email alerts for upcoming events (1 day before)"""
+async def send_alert_emails(family_id: str, background_tasks: BackgroundTasks):
+    """Send email alerts to all family members with emails (1 day before events)"""
     today = datetime.now(timezone.utc)
     tomorrow = today + timedelta(days=1)
     
-    alerts_to_send = []
-    
-    # Get all family members
+    # Get all family members with emails
     members = await db.family_members.find({"family_id": family_id}, {"_id": 0}).to_list(1000)
+    member_emails = [m['email'] for m in members if m.get('email')]
+    
+    if not member_emails:
+        raise HTTPException(status_code=400, detail="No family members have email addresses")
+    
+    alerts_to_send = []
     
     for member in members:
         member_name = f"{member.get('first_name', '')} {member.get('last_name', '')}"
@@ -400,20 +406,25 @@ async def send_alert_emails(family_id: str, request: EmailNotificationRequest, b
     
     if alerts_to_send:
         # Build email content
-        email_content = "<html><body><h2>Upcoming Events Reminder</h2><p>The following events are happening tomorrow:</p><ul>"
+        email_content = "<html><body style='font-family: Arial, sans-serif;'><h2 style='color: #2C4F42;'>Upcoming Events Reminder</h2><p>The following events are happening tomorrow:</p><ul style='list-style-type: none; padding: 0;'>"
         for alert in alerts_to_send:
-            email_content += f"<li><strong>{alert['type']}</strong>: {alert['name']} on {alert['date']}</li>"
-        email_content += "</ul><p>Don't forget to celebrate!</p></body></html>"
+            email_content += f"<li style='margin: 10px 0; padding: 10px; background: #F5F2EB; border-left: 4px solid #C86B53;'><strong style='color: #2C4F42;'>{alert['type']}</strong>: {alert['name']} on {alert['date']}</li>"
+        email_content += "</ul><p style='color: #78716C;'>Don't forget to celebrate!</p><p style='font-size: 12px; color: #78716C;'>- OneFam Family Tree</p></body></html>"
         
-        # Send email in background
-        background_tasks.add_task(
-            send_email_notification,
-            request.email,
-            "OneFam - Upcoming Events Reminder",
-            email_content
-        )
+        # Send email to all members in background
+        for email in member_emails:
+            background_tasks.add_task(
+                send_email_notification,
+                email,
+                "OneFam - Upcoming Events Reminder",
+                email_content
+            )
         
-        return {"message": f"Email notification queued for {len(alerts_to_send)} event(s)"}
+        return {
+            "message": f"Email notification queued for {len(alerts_to_send)} event(s) to {len(member_emails)} family member(s)",
+            "recipients": len(member_emails),
+            "events": len(alerts_to_send)
+        }
     
     return {"message": "No events happening tomorrow"}
 
