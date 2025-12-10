@@ -307,7 +307,7 @@ const EventsCalendar = ({ open, onClose, familyId, members }) => {
                   <SelectValue placeholder="Select member" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {members.map((m) => (
                     <SelectItem key={m.id} value={m.id}>
                       {m.first_name} {m.last_name}
