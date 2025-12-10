@@ -20,7 +20,7 @@ const EventsCalendar = ({ open, onClose, familyId, members }) => {
   const [newEvent, setNewEvent] = useState({
     event_name: '',
     event_date: '',
-    member_id: '',
+    member_id: 'none',
   });
 
   const currentYear = new Date().getFullYear();
