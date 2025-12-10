@@ -79,7 +79,11 @@ const EventsCalendar = ({ open, onClose, familyId, members }) => {
   const handleAddCustomEvent = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/families/${familyId}/events`, newEvent);
+      const eventData = {
+        ...newEvent,
+        member_id: newEvent.member_id === 'none' ? null : newEvent.member_id || null
+      };
+      await axios.post(`${API}/families/${familyId}/events`, eventData);
       toast.success('Event added successfully!');
       setShowAddEventDialog(false);
       setNewEvent({ event_name: '', event_date: '', member_id: '' });
