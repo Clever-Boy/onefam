@@ -159,19 +159,120 @@ class FamilyTreeAPITester:
             return True
         return False
 
+    def test_create_member_with_father(self):
+        """Test creating a family member with father_id"""
+        if not self.family_id or not self.member_id:
+            print("❌ No family or member ID available")
+            return False
+
+        member_data = {
+            "first_name": "Child",
+            "last_name": "Doe",
+            "email": "child.doe@example.com",
+            "father_id": self.member_id,  # John Doe as father
+            "mother_id": None
+        }
+
+        success, response = self.run_test(
+            "Create Member with Father",
+            "POST",
+            f"families/{self.family_id}/members",
+            200,
+            data=member_data
+        )
+        if success and 'id' in response:
+            self.child_id = response['id']
+            print(f"✅ Child member created with father_id: {self.member_id}")
+            return True
+        return False
+
+    def test_create_member_with_mother(self):
+        """Test creating a family member with mother_id"""
+        if not self.family_id:
+            print("❌ No family ID available")
+            return False
+
+        # Create mother first
+        mother_data = {
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "email": "jane.doe@example.com",
+            "father_id": None,
+            "mother_id": None
+        }
+
+        success, response = self.run_test(
+            "Create Mother Member",
+            "POST",
+            f"families/{self.family_id}/members",
+            200,
+            data=mother_data
+        )
+        if success and 'id' in response:
+            self.mother_id = response['id']
+            
+            # Now create child with mother
+            child_data = {
+                "first_name": "Child2",
+                "last_name": "Doe",
+                "email": "child2.doe@example.com",
+                "father_id": None,
+                "mother_id": self.mother_id
+            }
+
+            success2, response2 = self.run_test(
+                "Create Member with Mother",
+                "POST",
+                f"families/{self.family_id}/members",
+                200,
+                data=child_data
+            )
+            if success2:
+                print(f"✅ Child member created with mother_id: {self.mother_id}")
+                return True
+        return False
+
+    def test_create_member_with_both_parents(self):
+        """Test creating a family member with both father_id and mother_id"""
+        if not self.family_id or not self.member_id or not hasattr(self, 'mother_id'):
+            print("❌ No family, father, or mother ID available")
+            return False
+
+        member_data = {
+            "first_name": "Child3",
+            "last_name": "Doe",
+            "email": "child3.doe@example.com",
+            "father_id": self.member_id,  # John Doe as father
+            "mother_id": self.mother_id   # Jane Doe as mother
+        }
+
+        success, response = self.run_test(
+            "Create Member with Both Parents",
+            "POST",
+            f"families/{self.family_id}/members",
+            200,
+            data=member_data
+        )
+        if success:
+            print(f"✅ Child member created with both parents - father_id: {self.member_id}, mother_id: {self.mother_id}")
+            return True
+        return False
+
     def test_update_family_member(self):
-        """Test updating a family member"""
+        """Test updating a family member with parent fields"""
         if not self.family_id or not self.member_id:
             print("❌ No family or member ID available")
             return False
 
         update_data = {
-            "first_name": "Jane",
-            "comments": "Updated test member"
+            "first_name": "John Updated",
+            "comments": "Updated test member",
+            "father_id": None,
+            "mother_id": None
         }
 
         success, response = self.run_test(
-            "Update Family Member",
+            "Update Family Member with Parent Fields",
             "PUT",
             f"families/{self.family_id}/members/{self.member_id}",
             200,
