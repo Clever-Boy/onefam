@@ -256,22 +256,17 @@ class FamilyTreeAPITester:
         return False
 
     def test_send_alert_emails(self):
-        """Test sending alert emails"""
+        """Test sending alert emails to all family members"""
         if not self.family_id:
             print("❌ No family ID available")
             return False
 
-        email_data = {
-            "email": "test@example.com",
-            "family_id": self.family_id
-        }
-
+        # No data needed - sends to all family members with emails automatically
         success, response = self.run_test(
-            "Send Alert Emails",
+            "Send Alert Emails to All Family Members",
             "POST",
             f"families/{self.family_id}/send-alerts",
-            200,
-            data=email_data
+            200
         )
         return success
 
