@@ -72,7 +72,7 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
     try {
       const submitData = {
         ...formData,
-        parent_id: formData.parent_id || null,
+        parent_id: formData.parent_id === 'root' ? null : formData.parent_id || null,
       };
 
       if (member) {
