@@ -66,8 +66,8 @@ const EventsCalendar = ({ open, onClose, familyId, members }) => {
   const loadCustomEvents = async () => {
     try {
       const params = {};
-      if (selectedMonth) params.month = parseInt(selectedMonth);
-      if (selectedYear) params.year = parseInt(selectedYear);
+      if (selectedMonth && selectedMonth !== 'all') params.month = parseInt(selectedMonth);
+      if (selectedYear && selectedYear !== 'all') params.year = parseInt(selectedYear);
 
       const response = await axios.get(`${API}/families/${familyId}/events`, { params });
       setCustomEvents(response.data);
