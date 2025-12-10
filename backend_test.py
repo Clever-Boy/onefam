@@ -111,7 +111,7 @@ class FamilyTreeAPITester:
         return False
 
     def test_create_family_member(self):
-        """Test creating a family member"""
+        """Test creating a family member with email field"""
         if not self.family_id:
             print("❌ No family ID available for member creation")
             return False
@@ -119,11 +119,13 @@ class FamilyTreeAPITester:
         member_data = {
             "first_name": "John",
             "last_name": "Doe",
+            "email": "john.doe@example.com",
             "address": "123 Main St, City, State",
             "birthday": "1990-01-15",
             "anniversary": "2015-06-20",
             "comments": "Test member for API testing",
-            "parent_id": None,
+            "father_id": None,
+            "mother_id": None,
             "photo_base64": None
         }
 
