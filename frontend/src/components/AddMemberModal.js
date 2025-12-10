@@ -233,7 +233,7 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
                 <SelectValue placeholder="Select parent (root if none)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Root (No Parent)</SelectItem>
+                <SelectItem value="root">Root (No Parent)</SelectItem>
                 {availableParents.map((m) => (
                   <SelectItem key={m.id} value={m.id}>
                     {m.first_name} {m.last_name}
