@@ -3,30 +3,23 @@ import axios from 'axios';
 import { API } from '../App';
 import { toast } from 'sonner';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
 import { Button } from './ui/button';
-import { Bell, Cake, Heart, Calendar as CalendarIcon, Mail } from 'lucide-react';
+import { Bell, Cake, Heart, Calendar as CalendarIcon, Mail, Users } from 'lucide-react';
 
 const AlertsPanel = ({ open, onClose, familyId, alerts }) => {
-  const [email, setEmail] = useState('');
   const [sending, setSending] = useState(false);
 
   const handleSendAlerts = async () => {
-    if (!email) {
-      toast.error('Please enter an email address');
-      return;
-    }
-
     setSending(true);
     try {
-      await axios.post(`${API}/families/${familyId}/send-alerts`, {
-        email,
-        family_id: familyId,
-      });
-      toast.success('Alert email sent successfully!');
+      const response = await axios.post(`${API}/families/${familyId}/send-alerts`);
+      toast.success(response.data.message);
     } catch (error) {
-      toast.error('Failed to send alert email');
+      if (error.response?.status === 400) {
+        toast.error('No family members have email addresses. Please add emails to members.');
+      } else {
+        toast.error('Failed to send alert emails');
+      }
     } finally {
       setSending(false);
     }
@@ -66,32 +59,29 @@ const AlertsPanel = ({ open, onClose, familyId, alerts }) => {
               boxShadow: '0 4px 6px -1px rgba(44, 79, 66, 0.05)',
             }}
           >
-            <Label htmlFor="email" className="text-xs font-mono uppercase tracking-widest mb-2" style={{ color: '#78716C' }}>
-              Send Alerts via Email
-            </Label>
-            <div className="flex gap-2">
-              <Input
-                id="email"
-                data-testid="alert-email-input"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="font-serif"
-              />
-              <Button
-                data-testid="send-alerts-button"
-                onClick={handleSendAlerts}
-                disabled={sending}
-                className="flex items-center gap-2 rounded-full"
-                style={{ backgroundColor: '#2C4F42', color: '#F5F2EB' }}
-              >
-                <Mail size={16} />
-                {sending ? 'Sending...' : 'Send'}
-              </Button>
+            <div className="flex items-start gap-3 mb-3">
+              <Users size={20} style={{ color: '#2C4F42' }} />
+              <div className="flex-1">
+                <h3 className="font-serif font-medium text-sm" style={{ color: '#2C4F42' }}>
+                  Send to All Family Members
+                </h3>
+                <p className="text-xs mt-1" style={{ color: '#78716C' }}>
+                  Emails will be sent to all family members who have added their email addresses
+                </p>
+              </div>
             </div>
+            <Button
+              data-testid="send-alerts-button"
+              onClick={handleSendAlerts}
+              disabled={sending}
+              className="w-full flex items-center justify-center gap-2 rounded-full"
+              style={{ backgroundColor: '#2C4F42', color: '#F5F2EB' }}
+            >
+              <Mail size={16} />
+              {sending ? 'Sending...' : 'Send Alert Emails'}
+            </Button>
             <p className="text-xs mt-2" style={{ color: '#78716C' }}>
-              Get notified 1 day before upcoming events
+              Notifications for events happening tomorrow (1 day before)
             </p>
           </div>
 

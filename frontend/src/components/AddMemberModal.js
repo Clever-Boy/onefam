@@ -14,11 +14,13 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
+    email: '',
     address: '',
     birthday: '',
     anniversary: '',
     comments: '',
-    parent_id: '',
+    father_id: '',
+    mother_id: '',
     photo_base64: '',
   });
   const [loading, setLoading] = useState(false);
@@ -28,22 +30,26 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
       setFormData({
         first_name: member.first_name || '',
         last_name: member.last_name || '',
+        email: member.email || '',
         address: member.address || '',
         birthday: member.birthday || '',
         anniversary: member.anniversary || '',
         comments: member.comments || '',
-        parent_id: member.parent_id || '',
+        father_id: member.father_id || '',
+        mother_id: member.mother_id || '',
         photo_base64: member.photo_base64 || '',
       });
     } else {
       setFormData({
         first_name: '',
         last_name: '',
+        email: '',
         address: '',
         birthday: '',
         anniversary: '',
         comments: '',
-        parent_id: '',
+        father_id: '',
+        mother_id: '',
         photo_base64: '',
       });
     }
@@ -72,7 +78,8 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
     try {
       const submitData = {
         ...formData,
-        parent_id: formData.parent_id === 'root' ? null : formData.parent_id || null,
+        father_id: formData.father_id === 'root' ? null : formData.father_id || null,
+        mother_id: formData.mother_id === 'root' ? null : formData.mother_id || null,
       };
 
       if (member) {
@@ -176,6 +183,22 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
             </div>
           </div>
 
+          {/* Email */}
+          <div>
+            <Label htmlFor="email" className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
+              Email (For notifications)
+            </Label>
+            <Input
+              id="email"
+              data-testid="email-input"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="font-serif text-lg"
+              placeholder="member@example.com"
+            />
+          </div>
+
           {/* Address */}
           <div>
             <Label htmlFor="address" className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
@@ -220,27 +243,50 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
             </div>
           </div>
 
-          {/* Parent Selection */}
-          <div>
-            <Label htmlFor="parent" className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
-              Parent (Optional)
-            </Label>
-            <Select
-              value={formData.parent_id}
-              onValueChange={(value) => setFormData({ ...formData, parent_id: value })}
-            >
-              <SelectTrigger data-testid="parent-select" className="font-serif text-lg">
-                <SelectValue placeholder="Select parent (root if none)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="root">Root (No Parent)</SelectItem>
-                {availableParents.map((m) => (
-                  <SelectItem key={m.id} value={m.id}>
-                    {m.first_name} {m.last_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          {/* Parent Selection - Father and Mother */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="father" className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
+                Father (Optional)
+              </Label>
+              <Select
+                value={formData.father_id}
+                onValueChange={(value) => setFormData({ ...formData, father_id: value })}
+              >
+                <SelectTrigger data-testid="father-select" className="font-serif text-lg">
+                  <SelectValue placeholder="Select father" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="root">Root (No Father)</SelectItem>
+                  {availableParents.map((m) => (
+                    <SelectItem key={m.id} value={m.id}>
+                      {m.first_name} {m.last_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="mother" className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
+                Mother (Optional)
+              </Label>
+              <Select
+                value={formData.mother_id}
+                onValueChange={(value) => setFormData({ ...formData, mother_id: value })}
+              >
+                <SelectTrigger data-testid="mother-select" className="font-serif text-lg">
+                  <SelectValue placeholder="Select mother" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="root">Root (No Mother)</SelectItem>
+                  {availableParents.map((m) => (
+                    <SelectItem key={m.id} value={m.id}>
+                      {m.first_name} {m.last_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Comments */}
