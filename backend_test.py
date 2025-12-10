@@ -439,6 +439,12 @@ def main():
     print("\n📋 FAMILY MEMBER TESTS")
     tester.test_create_family_member()
     tester.test_get_family_members()
+    
+    # Dual Parent System Tests
+    print("\n📋 DUAL PARENT SYSTEM TESTS")
+    tester.test_create_member_with_father()
+    tester.test_create_member_with_mother()
+    tester.test_create_member_with_both_parents()
     tester.test_update_family_member()
 
     # Events Tests
