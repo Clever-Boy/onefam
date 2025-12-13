@@ -108,7 +108,7 @@ const AddMemberModal = ({ open, onClose, familyId, member, members, onSuccess })
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scroll" style={{ backgroundColor: '#FEFDFB' }}>
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl" style={{ fontFamily: 'Playfair Display', color: '#2C4F42' }}>
             {member ? 'Edit Family Member' : 'Add Family Member'}
