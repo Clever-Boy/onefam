@@ -138,121 +138,163 @@ const CardsView = ({ members, onEdit, onDelete }) => {
             const parentsInfo = getParentsInfo(member);
 
             return (
-        <div
-          key={member.id}
-          data-testid={`member-card-${index}`}
-          className="bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl p-6 relative group hover-lift"
-          style={{
-            boxShadow: '0 4px 6px -1px rgba(44, 79, 66, 0.05), 0 2px 4px -1px rgba(44, 79, 66, 0.03)',
-            animationDelay: `${index * 0.05}s`,
-          }}
-        >
-          {/* Photo */}
-          <div className="flex flex-col items-center mb-4">
-            <div
-              className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0"
-              style={{
-                backgroundColor: '#E6E1D6',
-                border: '3px solid #2C4F42',
-              }}
-            >
-              {member.photo_base64 ? (
-                <img
-                  src={member.photo_base64}
-                  alt={`${member.first_name} ${member.last_name}`}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center" style={{ color: '#2C4F42' }}>
-                  <User size={48} />
+            return (
+              <div
+                key={member.id}
+                data-testid={`member-card-${index}`}
+                className="bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl p-6 relative group hover-lift"
+                style={{
+                  boxShadow: '0 4px 6px -1px rgba(44, 79, 66, 0.05), 0 2px 4px -1px rgba(44, 79, 66, 0.03)',
+                  animationDelay: `${index * 0.05}s`,
+                }}
+              >
+                {/* Photo */}
+                <div className="flex flex-col items-center mb-4">
+                  <div
+                    className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0"
+                    style={{
+                      backgroundColor: '#E6E1D6',
+                      border: '3px solid #2C4F42',
+                    }}
+                  >
+                    {member.photo_base64 ? (
+                      <img
+                        src={member.photo_base64}
+                        alt={`${member.first_name} ${member.last_name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center" style={{ color: '#2C4F42' }}>
+                        <User size={48} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* Name */}
-          <h3 className="text-xl font-serif font-medium text-center mb-2" style={{ fontFamily: 'Playfair Display', color: '#2C4F42' }}>
-            {member.first_name} {member.last_name}
-          </h3>
+                {/* Name */}
+                <h3 className="text-xl font-serif font-medium text-center mb-2" style={{ fontFamily: 'Playfair Display', color: '#2C4F42' }}>
+                  {member.first_name} {member.last_name}
+                </h3>
 
-          {/* Address */}
-          {member.address && (
-            <div className="flex items-center gap-2 justify-center mb-3" style={{ color: '#78716C' }}>
-              <MapPin size={14} />
-              <p className="text-sm">{member.address}</p>
-            </div>
-          )}
+                {/* Parents Info */}
+                {parentsInfo.length > 0 && (
+                  <div className="text-center mb-3 pb-3 border-b" style={{ borderColor: '#D6D3C9' }}>
+                    <p className="text-xs font-mono uppercase tracking-widest" style={{ color: '#78716C' }}>
+                      Parents
+                    </p>
+                    <p className="text-sm mt-1" style={{ color: '#2C4F42' }}>
+                      {parentsInfo.join(' & ')}
+                    </p>
+                  </div>
+                )}
 
-          {/* Events */}
-          <div className="space-y-2 mb-4">
-            {member.birthday && (
-              <div className="flex items-center justify-center gap-2" style={{ color: '#C86B53' }}>
-                <Cake size={16} />
-                <span className="text-sm">
-                  Birthday: {new Date(member.birthday).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </span>
+                {/* Address */}
+                {member.address && (
+                  <div className="flex items-center gap-2 justify-center mb-3" style={{ color: '#78716C' }}>
+                    <MapPin size={14} />
+                    <p className="text-sm">{member.address}</p>
+                  </div>
+                )}
+
+                {/* Events */}
+                <div className="space-y-2 mb-4">
+                  {member.birthday && (
+                    <div className="flex items-center justify-center gap-2" style={{ color: '#C86B53' }}>
+                      <Cake size={16} />
+                      <span className="text-sm">
+                        Birthday: {new Date(member.birthday).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
+                  {member.anniversary && (
+                    <div className="flex items-center justify-center gap-2" style={{ color: '#C86B53' }}>
+                      <Heart size={16} />
+                      <span className="text-sm">
+                        Anniversary: {new Date(member.anniversary).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Comments */}
+                {member.comments && (
+                  <p className="text-sm text-center line-clamp-3 mb-4" style={{ color: '#78716C' }}>
+                    {member.comments}
+                  </p>
+                )}
+
+                {/* Children indicator and navigation */}
+                {hasChildren && (
+                  <div className="mb-4">
+                    <button
+                      data-testid={`view-children-${index}`}
+                      onClick={() => handleNavigateToChildren(member.id)}
+                      className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-full text-sm font-sans"
+                      style={{
+                        backgroundColor: 'rgba(44, 79, 66, 0.1)',
+                        color: '#2C4F42',
+                        transition: 'background-color 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.2)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.1)';
+                      }}
+                    >
+                      <Users2 size={16} />
+                      View Children ({member.children.length})
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Action buttons */}
+                <div className="flex gap-2 mt-4">
+                  <button
+                    data-testid={`edit-card-member-${index}`}
+                    onClick={() => onEdit(member)}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-sm font-sans"
+                    style={{
+                      backgroundColor: 'rgba(44, 79, 66, 0.1)',
+                      color: '#2C4F42',
+                      transition: 'background-color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.1)';
+                    }}
+                  >
+                    <Pencil size={14} />
+                    Edit
+                  </button>
+                  <button
+                    data-testid={`delete-card-member-${index}`}
+                    onClick={() => onDelete(member.id)}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-sm font-sans"
+                    style={{
+                      backgroundColor: 'rgba(200, 107, 83, 0.1)',
+                      color: '#C86B53',
+                      transition: 'background-color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(200, 107, 83, 0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(200, 107, 83, 0.1)';
+                    }}
+                  >
+                    <Trash2 size={14} />
+                    Delete
+                  </button>
+                </div>
               </div>
-            )}
-            {member.anniversary && (
-              <div className="flex items-center justify-center gap-2" style={{ color: '#C86B53' }}>
-                <Heart size={16} />
-                <span className="text-sm">
-                  Anniversary: {new Date(member.anniversary).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Comments */}
-          {member.comments && (
-            <p className="text-sm text-center line-clamp-3 mb-4" style={{ color: '#78716C' }}>
-              {member.comments}
-            </p>
-          )}
-
-          {/* Action buttons */}
-          <div className="flex gap-2 mt-4">
-            <button
-              data-testid={`edit-card-member-${index}`}
-              onClick={() => onEdit(member)}
-              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-sm font-sans"
-              style={{
-                backgroundColor: 'rgba(44, 79, 66, 0.1)',
-                color: '#2C4F42',
-                transition: 'background-color 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(44, 79, 66, 0.1)';
-              }}
-            >
-              <Pencil size={14} />
-              Edit
-            </button>
-            <button
-              data-testid={`delete-card-member-${index}`}
-              onClick={() => onDelete(member.id)}
-              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-sm font-sans"
-              style={{
-                backgroundColor: 'rgba(200, 107, 83, 0.1)',
-                color: '#C86B53',
-                transition: 'background-color 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(200, 107, 83, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(200, 107, 83, 0.1)';
-              }}
-            >
-              <Trash2 size={14} />
-              Delete
-            </button>
-          </div>
+            );
+          })}
         </div>
-      ))}
+      )}
     </div>
   );
 };
