@@ -138,7 +138,6 @@ const CardsView = ({ members, onEdit, onDelete }) => {
             const parentsInfo = getParentsInfo(member);
 
             return (
-            return (
               <div
                 key={member.id}
                 data-testid={`member-card-${index}`}
